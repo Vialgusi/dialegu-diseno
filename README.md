@@ -10,7 +10,7 @@ La norma, con sus motivos, está en `docs/SISTEMA-DISENO-DIALEGU.md` de Dialegu-
 |---|---|
 | `fuentes/fuentes.css` + `*.woff2` | Fuentes autoalojadas, sin Google Fonts. Dos recortes por fuente: latino (siempre) y extendido (lenguas indígenas escritas en latín), que solo se descarga si la página lo usa |
 | `nucleo/nucleo.css` | Tokens `--dlg-*`: papeles tipográficos, estados, foco, radios, área mínima; foco visible y movimiento reducido |
-| `mesa/mesa.css` | Modo mesa: papel, cartulina Bristol de cuatro colores con su tinta, mesa de noche y los objetos para aportar (hoja, filtros, postit, aviso, muro tipo corcho) |
+| `mesa/mesa.css` | Modo mesa: papel, cartulina Bristol de cuatro colores con su tinta, mesa de noche y los objetos para aportar (hoja, filtros, postit, aviso, muro tipo corcho, muro de aportes con `.muro` y `.nota`) |
 | `catalogo/index.html` | El sistema funcionando, para revisar y decidir |
 
 **Tipografía de diálogo:** en toda superficie donde se lee en común, se conversa o se cocrea, la interfaz usa **Dialegu Escolar** (la «a» escolar, cifras del mismo ancho) y lo que escribe una persona va en **Shantell Sans**, como una tarjeta de Metaplan. Una superficie de diálogo en español descarga unos 87 KB de fuentes.
@@ -21,7 +21,7 @@ Como dependencia de Git con versión etiquetada. `npm` fija el commit exacto en 
 
 ```json
 "dependencies": {
-  "@dialegu/diseno": "github:Vialgusi/dialegu-diseno#semver:^0.6.0"
+  "@dialegu/diseno": "github:Vialgusi/dialegu-diseno#semver:^0.7.0"
 }
 ```
 
@@ -34,6 +34,7 @@ En el CSS de entrada (Vite resuelve y copia las fuentes):
 ```css
 @import '@dialegu/diseno/fuentes.css';
 @import '@dialegu/diseno/fuentes-leer.css'; /* solo Leer: EB Garamond */
+@import '@dialegu/diseno/fuentes-sistematiza.css'; /* solo Sistematízame: Atkinson Hyperlegible */
 @import '@dialegu/diseno/nucleo.css';
 @import '@dialegu/diseno/mesa.css';   /* solo en rutas con superficie de diálogo */
 @import './tema.css';                 /* los valores del tema del producto */

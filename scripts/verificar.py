@@ -47,6 +47,7 @@ PARES_DIA = [
     ('--mesa-tinta', '--mesa-papel', 4.5, 'texto sobre papel'),
     ('--mesa-tinta', '--mesa-hoja', 4.5, 'texto sobre hoja'),
     ('--mesa-tinta-suave', '--mesa-papel', 4.5, 'rótulo sobre papel'),
+    ('--mesa-tinta-suave', '--mesa-hoja', 4.5, 'nota oculta: tinta suave sobre hoja'),
     ('--dlg-error', '--dlg-error-fondo', 4.5, 'error sobre su fondo'),
     ('--dlg-aviso', '--dlg-aviso-fondo', 4.5, 'aviso sobre su fondo'),
     ('--dlg-exito', '--dlg-exito-fondo', 4.5, 'éxito sobre su fondo'),
@@ -74,6 +75,7 @@ PRESUPUESTOS = {
     'mesa/mesa.css': 16_500,
     'fuentes/fuentes.css': 12_000,
     'fuentes/fuentes-leer.css': 3_000,
+    'fuentes/fuentes-sistematiza.css': 4_000,
 }
 # Una fuente variable reúne todos sus pesos en un archivo: se compara con la
 # suma de las estáticas que reemplaza (Fraunces 400, 600 y 700 ≈ 52 KB).

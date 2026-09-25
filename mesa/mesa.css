@@ -1,4 +1,4 @@
-/* Modo mesa del sistema Dialegu · v0.6.0
+/* Modo mesa del sistema Dialegu · v0.7.0
    La capa de participación: donde un grupo lee, conversa o aporta sobre algo
    en común. Nace del lector de colecciones de Leer Dialegu, que la probó y la
    midió; conserva sus nombres de clase para que Leer la adopte sin tocar su
@@ -75,7 +75,7 @@
     background: var(--mesa-papel);
     font-family: var(--mesa-font-interfaz);
 }
-.mesa :is(h1, h2, h3, h4) { font-family: var(--mesa-font-mano); font-weight: 400; }
+.mesa :is(h1, h2, h3, h4) { color: inherit; font-family: var(--mesa-font-mano); font-weight: 400; }
 
 /* Cartulinas: una clase por color, con su tinta. */
 .cartulina--verde    { background: var(--mesa-verde);    color: var(--mesa-verde-tinta); }
@@ -124,6 +124,9 @@
 .feedback-legend button:nth-child(even) { transform: rotate(1.2deg); }
 .feedback-legend button:hover { transform: rotate(0) translateY(-1px); background: #FFFFFF; }
 .feedback-legend button.is-active { background: #FFFFFF; outline: 2px solid rgba(31, 58, 95, .35); outline-offset: 1px; }
+/* De noche la hoja es oscura: el filtro activo se marca con el contorno claro. */
+.mesa--noche .feedback-legend button:hover, .mesa--noche .feedback-legend button.is-active { background: var(--mesa-hoja); }
+.mesa--noche .feedback-legend button.is-active { outline-color: var(--mesa-tinta); }
 .feedback-swatch { width: 13px; height: 13px; box-shadow: 0 1px 1px rgba(176, 122, 79, .35); transform: rotate(-6deg); }
 
 /* ---- Postit: el aporte ------------------------------------------------- */
@@ -188,9 +191,48 @@
 .observer-note-body { display: block; overflow-wrap: anywhere; }
 .observer-note-author { display: block; margin-top: .55rem; font-size: .82rem; font-style: italic; }
 
+/* ---- Muro de aportes: notas sobre la mesa --------------------------------
+   Viene del muro de la mesa de trabajo de Encuentros, probado con grupos en
+   el celular y en proyección. Una nota es una cartulina con su tinta; el color
+   lo pone `.nota--verde|amarilla|azul|roja` y el tipo siempre va escrito en el
+   rótulo. Rótulo y firma separan por peso, no por opacidad (AA en cartulina). */
+.muro {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+    gap: 1.75rem 1.5rem; align-items: start; margin: 0; padding: 1.5rem 1rem; list-style: none;
+    background: linear-gradient(rgba(31, 58, 95, .035) 1px, transparent 1px), linear-gradient(90deg, rgba(31, 58, 95, .035) 1px, transparent 1px), var(--mesa-papel);
+    background-size: 24px 24px; box-shadow: inset 0 0 0 1px rgba(31, 58, 95, .08);
+}
+.nota {
+    --nota-papel: var(--mesa-amarilla); --nota-tinta: var(--mesa-amarilla-tinta);
+    position: relative; display: flex; flex-direction: column; min-height: 11rem;
+    padding: 1.1rem 1.1rem 1rem; border-radius: 0 0 2px 8px; color: var(--nota-tinta);
+    background: radial-gradient(130% 70% at 46% -4%, rgba(255, 255, 255, .38), transparent 60%), linear-gradient(180deg, transparent 74%, rgba(31, 58, 95, .08) 100%), var(--nota-papel);
+    box-shadow: 0 2px 2px rgba(176, 122, 79, .22), 0 13px 16px -12px rgba(31, 58, 95, .5);
+    transform: rotate(-.8deg); transition: transform .16s ease, box-shadow .16s ease;
+}
+.nota:nth-child(3n) { transform: rotate(1.1deg); }
+.nota:nth-child(4n) { transform: rotate(-.3deg); }
+.nota:hover, .nota:focus-within { z-index: 2; transform: rotate(0) translateY(-3px); box-shadow: 0 4px 4px rgba(176, 122, 79, .24), 0 20px 22px -14px rgba(31, 58, 95, .55); }
+.nota::after { content: ''; position: absolute; right: 0; bottom: 0; width: 24px; height: 24px; background: linear-gradient(315deg, rgba(255, 255, 255, .58) 0 43%, rgba(31, 58, 95, .2)); clip-path: polygon(100% 0, 100% 100%, 0 100%); pointer-events: none; }
+.nota--verde { --nota-papel: var(--mesa-verde); --nota-tinta: var(--mesa-verde-tinta); }
+.nota--azul  { --nota-papel: var(--mesa-azul);  --nota-tinta: var(--mesa-azul-tinta); }
+.nota--roja  { --nota-papel: var(--mesa-roja);  --nota-tinta: var(--mesa-roja-tinta); }
+.nota--oculta { --nota-papel: var(--mesa-hoja); --nota-tinta: var(--mesa-tinta-suave); box-shadow: var(--mesa-contacto); outline: 2px dashed rgba(31, 58, 95, .3); outline-offset: -6px; }
+.nota-rotulo { font-family: var(--mesa-font-interfaz); font-size: .8rem; font-weight: 700; line-height: 1.3; }
+.nota-texto { flex: 1; margin: .6rem 0 0; font-family: var(--mesa-font-mano); font-size: 1.08rem; line-height: 1.42; white-space: pre-line; overflow-wrap: anywhere; }
+.nota-texto--recortado { display: -webkit-box; -webkit-line-clamp: 7; -webkit-box-orient: vertical; overflow: hidden; }
+.nota-firma { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .25rem .75rem; margin-top: .9rem; padding-top: .6rem; border-top: 1px solid color-mix(in srgb, currentColor 18%, transparent); font-family: var(--mesa-font-interfaz); font-size: .82rem; font-weight: 700; }
+.nota-accion { min-height: var(--dlg-area-minima); padding: 0 .25rem; border: 0; background: none; color: inherit; font: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.muro--ordenado .nota { transform: none; }
+/* En proyección la nota se lee a cinco metros. */
+.muro--proyeccion { grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); gap: 2rem; }
+.muro--proyeccion .nota { min-height: 14rem; }
+.muro--proyeccion .nota-texto { font-size: 1.35rem; }
+
 @media (max-width: 900px) {
     .observer-board { column-width: 13.5rem; column-gap: .75rem; padding: .7rem; }
+    .muro { gap: 1.5rem; padding: 1.1rem .75rem; }
 }
 @media (prefers-reduced-motion: reduce) {
-    .feedback-note, .feedback-write-button, .feedback-legend button, .observer-note { transition: none; transform: none; }
+    .feedback-note, .feedback-write-button, .feedback-legend button, .observer-note, .nota { transition: none; transform: none; }
 }

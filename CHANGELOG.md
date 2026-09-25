@@ -1,5 +1,12 @@
 # Cambios
 
+## 0.7.0 · 25-09-2026
+
+- **`fuentes-sistematiza.css`** (opcional): Atkinson Hyperlegible 400 y 700, redonda y cursiva, para la interfaz de Sistematízame (decisión D14). Con ella Sistematízame sale de Google Fonts.
+- **Muro de aportes en el modo mesa**: `.muro` (la superficie) y `.nota` con `.nota-rotulo`, `.nota-texto`, `.nota-firma` y `.nota-accion`. Viene del muro de la mesa de trabajo de Encuentros. Color por cartulina con `.nota--verde|amarilla|azul|roja` y `.nota--oculta` para lo que solo ve quien facilita. Variantes `.muro--ordenado` (sin giro) y `.muro--proyeccion` (letra para leer a distancia).
+- Nuevo par verificado: tinta suave sobre hoja (nota oculta).
+- Corrige la mesa de noche: los títulos de la mesa toman su tinta (antes podía ganar el color de título del producto, oscuro sobre oscuro) y el filtro activo ya no usa fondo blanco fijo.
+
 ## 0.6.0 · 25-09-2026
 
 - **Fraunces variable** (tamaño óptico 9–144 y peso 100–900), fiel a como la servía Google Fonts: SOFT y WONK en 0, mismos anchos verificados en tres puntos del diseño. La 0.5.0 servía la versión fija para texto pequeño en todos los tamaños, lo que engrosaba los títulos grandes. Una sola cara cubre del 100 al 900, incluidos el 800 y el 900 que usa Leer.

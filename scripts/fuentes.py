@@ -14,8 +14,8 @@ Andika se renombra «Dialegu Escolar»: la OFL reserva «Andika» para la fuente
 modificar y el recorte es una modificación.
 
 Uso: python scripts/fuentes.py <carpeta con los TTF originales>
-Genera los .woff2, fuentes/fuentes.css (núcleo) y fuentes/fuentes-leer.css (tema
-de Leer). Declarar una cara no cuesta: el navegador solo la descarga cuando
+Genera los .woff2, fuentes/fuentes.css (núcleo), fuentes/fuentes-leer.css (tema
+de Leer) y fuentes/fuentes-sistematiza.css (tema de Sistematízame). Declarar una cara no cuesta: el navegador solo la descarga cuando
 alguna letra de la página la usa.
 """
 import pathlib
@@ -52,9 +52,13 @@ FUENTES = [
     ('nucleo', 'Fraunces-var', 'Fraunces-var', 'Fraunces', '100 900', 'normal', False, {'SOFT': 0, 'WONK': 0}),
     ('leer', 'EBGaramond-var', 'EBGaramond-var', 'EB Garamond', '400 800', 'normal', False, None),
     ('leer', 'EBGaramond-Italic-var', 'EBGaramond-italic-var', 'EB Garamond', '400 800', 'italic', False, None),
+    ('sistematiza', 'Atkinson-400', 'Atkinson-400', 'Atkinson Hyperlegible', '400', 'normal', False, None),
+    ('sistematiza', 'Atkinson-400i', 'Atkinson-400i', 'Atkinson Hyperlegible', '400', 'italic', False, None),
+    ('sistematiza', 'Atkinson-700', 'Atkinson-700', 'Atkinson Hyperlegible', '700', 'normal', False, None),
+    ('sistematiza', 'Atkinson-700i', 'Atkinson-700i', 'Atkinson Hyperlegible', '700', 'italic', False, None),
 ]
 
-HOJAS = {'nucleo': 'fuentes.css', 'leer': 'fuentes-leer.css'}
+HOJAS = {'nucleo': 'fuentes.css', 'leer': 'fuentes-leer.css', 'sistematiza': 'fuentes-sistematiza.css'}
 
 COMENTARIOS = {
     'Dialegu Escolar': 'Diálogo: la «a» escolar en todo lo que se lee y se pulsa en una superficie\n'
@@ -67,6 +71,9 @@ COMENTARIOS = {
                 '   sola al tamaño del texto.',
     'EB Garamond': 'Lectura larga del tema de Leer: manifiestos y textos extensos. Variable,\n'
                    '   peso 400–800, redonda y cursiva.',
+    'Atkinson Hyperlegible': 'Interfaz de Sistematízame: la accesibilidad como identidad. Diseñada\n'
+                             '   por el Braille Institute para distinguir letras parecidas (I l 1, O 0).\n'
+                             '   400 y 700, redonda y cursiva.',
 }
 
 CABECERAS = {
@@ -79,6 +86,9 @@ CABECERAS = {
    Licencias en ./licencias. «Dialegu Escolar» deriva de Andika (SIL International). */
 """,
     'leer': """/* Fuentes propias del tema de Leer Dialegu. Se importa además de fuentes.css.
+   Archivo generado por scripts/fuentes.py: no editar a mano. Licencias en ./licencias. */
+""",
+    'sistematiza': """/* Fuentes propias del tema de Sistematízame. Se importa además de fuentes.css.
    Archivo generado por scripts/fuentes.py: no editar a mano. Licencias en ./licencias. */
 """,
 }
