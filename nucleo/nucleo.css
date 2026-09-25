@@ -1,0 +1,76 @@
+/* Núcleo del sistema de diseño Dialegu · v0.4.0
+   Lo que la persona lleva de un producto a otro. Los nombres son todos del
+   núcleo; los valores marcados «del tema» los redefine cada producto en su
+   propio archivo, después de importar este.
+   Documento: docs/SISTEMA-DISENO-DIALEGU.md */
+
+:root {
+    /* ---- Tipografía por papel -------------------------------------------
+       La familia se elige por lo que hace, no por gusto.
+       Diálogo: la «a» escolar latinoamericana en superficies de diálogo
+       (lectura compartida, cocreación, mesa, proyección). Sitio: páginas
+       institucionales y de producto. */
+    --dlg-font-dialogo: 'Dialegu Escolar', 'Andika', ui-rounded, system-ui, sans-serif;
+    --dlg-font-mano: 'Shantell Sans', 'Dialegu Escolar', 'Patrick Hand', ui-rounded, system-ui, sans-serif;
+    --dlg-font-titulo: 'Fraunces', Georgia, 'Times New Roman', serif;
+    /* Del tema: un producto puede sobrescribirlo para todo el sitio, con motivo
+       escrito. Sistematízame usa Atkinson Hyperlegible. */
+    --dlg-font-interfaz: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+    /* ---- Estados: fijos del núcleo ---------------------------------------
+       Quien se equivoca reconoce el error igual en cualquier producto.
+       Contraste con blanco: error 8,54 · aviso 5,93 · éxito 7,46 · info 11,48 */
+    --dlg-error: #8E2437;
+    --dlg-aviso: #8A5A00;
+    --dlg-exito: #435C31;
+    --dlg-info: #1F3A5F;
+    --dlg-error-fondo: #FCF1F2;
+    --dlg-aviso-fondo: #FBF4E4;
+    --dlg-exito-fondo: #F1F5EC;
+    --dlg-info-fondo: #EEF3F8;
+
+    /* ---- Del tema: texto, superficies, acción -------------------------- */
+    --dlg-texto: #1F3A5F;
+    --dlg-texto-suave: #51483B;
+    --dlg-fondo: #F7F1E8;
+    --dlg-superficie: #FFFDF7;
+    --dlg-borde: rgba(31, 58, 95, .16);
+    --dlg-accion: #A94E1E;
+    --dlg-accion-texto: #FFFFFF;
+
+    /* ---- Foco: pares autorizados (se mide contra el fondo que lo rodea) -
+       Claro: tinta sobre blanco, hoja, papel y las cuatro cartulinas (≥ 6,54).
+       Oscuro: blanco sobre tinta, noche y botones de acción (≥ 5,18).
+       Prohibido: tinta sobre fondos oscuros o de acción; blanco sobre claros. */
+    --dlg-foco: #1F3A5F;
+    --dlg-foco-sobre-oscuro: #FFFFFF;
+    --dlg-foco-grosor: 3px;
+    --dlg-foco-separacion: 3px;
+
+    /* ---- Forma ---------------------------------------------------------- */
+    --dlg-radio-control: 8px;
+    --dlg-radio-tarjeta: 12px;
+    --dlg-radio-marca: 4px;
+    --dlg-radio-media: 2px;
+    --dlg-area-minima: 44px;
+}
+
+/* Foco visible, siempre propio: el nativo se pierde sobre cartulina y sobre
+   fondos de color. `.dlg-oscuro` marca un contenedor de fondo oscuro. */
+:focus-visible {
+    outline: var(--dlg-foco-grosor) solid var(--dlg-foco);
+    outline-offset: var(--dlg-foco-separacion);
+}
+.dlg-oscuro :focus-visible,
+:focus-visible.dlg-oscuro {
+    outline-color: var(--dlg-foco-sobre-oscuro);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

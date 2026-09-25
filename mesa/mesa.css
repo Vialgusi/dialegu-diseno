@@ -1,0 +1,196 @@
+/* Modo mesa del sistema Dialegu · v0.4.0
+   La capa de participación: donde un grupo lee, conversa o aporta sobre algo
+   en común. Nace del lector de colecciones de Leer Dialegu, que la probó y la
+   midió; conserva sus nombres de clase para que Leer la adopte sin tocar su
+   marcado.
+
+   Por qué se ve así: venimos de la facilitación con tarjetas (Metaplan).
+   Sobre la mesa solo hay objetos —papel, cartulina, libros—; lo que escribe
+   una persona va a mano, y todo lo demás lleva la «a» escolar.
+
+   Frontera: aquí van los OBJETOS (lo que se toca y se lee). Dónde se apoyan
+   —columna, cajón móvil, pantalla completa— lo decide cada producto.
+   Requiere nucleo.css y fuentes.css. */
+
+:root {
+    /* ---- Material ------------------------------------------------------ */
+    --mesa-papel: #F7F1E8;       /* la superficie de la mesa */
+    --mesa-hoja: #FFFDF7;        /* papeles y objetos */
+    --mesa-tinta: #1F3A5F;       /* texto y sombra de contacto · 10,23 sobre papel */
+    --mesa-tinta-suave: #51483B; /* rótulos secundarios · 7,99 sobre papel */
+    --mesa-relato: #B07A4F;      /* sombra difusa y calidez */
+    --mesa-foco: #1F3A5F;        /* foco: tinta sobre papel y cartulinas (≥ 6,54) */
+
+    /* ---- Cartulina Bristol: cuatro colores, cada uno con su tinta -------
+       El material es común; el significado lo decide cada producto.
+       El tipo siempre va escrito: el color nunca comunica solo. */
+    --mesa-verde: #AECBB0;    --mesa-verde-tinta: #2E4B33;    /* 5,51 */
+    --mesa-amarilla: #F4D774; --mesa-amarilla-tinta: #5C4400; /* 6,49 */
+    --mesa-azul: #A9DCE3;     --mesa-azul-tinta: #17505A;     /* 6,02 */
+    --mesa-roja: #F3B79C;     --mesa-roja-tinta: #7A3A16;     /* 4,94 */
+
+    /* ---- Tipografía: dos familias en la mesa ---------------------------
+       Mano para lo que escribe una persona; diálogo (a escolar) para lo que
+       se pulsa o se lee como dato. Títulos en mano, peso 400: la jerarquía la
+       marca el tamaño, nunca el peso. */
+    --mesa-font-mano: var(--dlg-font-mano);
+    --mesa-font-interfaz: var(--dlg-font-dialogo);
+
+    /* ---- Sombras de materia: tinta para el contacto, relato para la difusa. Nada de negro. */
+    --mesa-contacto: 0 1px 1px rgba(31, 58, 95, .20);
+    --mesa-elevacion: 0 10px 14px -8px rgba(176, 122, 79, .42);
+    --mesa-elevacion-alta: 0 22px 28px -16px rgba(31, 58, 95, .28);
+
+    /* Compatibilidad con los nombres del lector de Leer (se retiran en 1.0). */
+    --desk: var(--mesa-papel);
+    --paper: var(--mesa-hoja);
+    --ink: var(--mesa-tinta);
+    --ink-soft: var(--mesa-tinta-suave);
+    --contact: var(--mesa-contacto);
+    --hand: var(--mesa-font-mano);
+    --bristol-green: var(--mesa-verde);  --bristol-green-ink: var(--mesa-verde-tinta);
+    --bristol-red: var(--mesa-roja);     --bristol-red-ink: var(--mesa-roja-tinta);
+    --bristol-blue: var(--mesa-azul);    --bristol-blue-ink: var(--mesa-azul-tinta);
+}
+
+/* Mesa de noche: para proyectar en salas oscuras. La mesa se oscurece y la tinta
+   se aclara; las cartulinas no cambian, porque son papel físico con su tinta.
+   El foco pasa a claro: se dibuja sobre la mesa oscura que rodea al control. */
+.mesa--noche {
+    --mesa-papel: #101714;       /* tinta clara sobre ella: 14,86 */
+    --mesa-hoja: #18221E;
+    --mesa-tinta: #E3EAE4;
+    --mesa-tinta-suave: #BCC8C1; /* 10,54 sobre papel de noche */
+    --mesa-relato: #6B4A2F;
+    --mesa-foco: #FFFFFF;
+    --mesa-contacto: 0 1px 1px rgba(0, 0, 0, .45);
+    --mesa-elevacion: 0 10px 14px -8px rgba(0, 0, 0, .55);
+    --mesa-elevacion-alta: 0 22px 28px -16px rgba(0, 0, 0, .6);
+    color-scheme: dark;
+}
+
+/* La superficie. Un producto la aplica al contenedor de su mesa. */
+.mesa {
+    color: var(--mesa-tinta);
+    background: var(--mesa-papel);
+    font-family: var(--mesa-font-interfaz);
+}
+.mesa :is(h1, h2, h3, h4) { font-family: var(--mesa-font-mano); font-weight: 400; }
+
+/* Cartulinas: una clase por color, con su tinta. */
+.cartulina--verde    { background: var(--mesa-verde);    color: var(--mesa-verde-tinta); }
+.cartulina--amarilla { background: var(--mesa-amarilla); color: var(--mesa-amarilla-tinta); }
+.cartulina--azul     { background: var(--mesa-azul);     color: var(--mesa-azul-tinta); }
+.cartulina--roja     { background: var(--mesa-roja);     color: var(--mesa-roja-tinta); }
+
+/* Foco en la mesa: tinta siempre. Dobla el contraste del color de acción
+   sobre cartulina (6,54–8,10 frente a 3,15–3,90). */
+.mesa :focus-visible {
+    outline: var(--dlg-foco-grosor) solid var(--mesa-foco) !important;
+    outline-offset: var(--dlg-foco-separacion);
+}
+
+/* Rótulo escrito a mano, directamente sobre el papel. */
+.desk-note { color: var(--mesa-tinta-suave); font-family: var(--mesa-font-mano); font-size: 1rem; line-height: 1.3; transform: rotate(-1deg); }
+
+/* ---- Un solo gesto para aportar: una hoja en blanco --------------------- */
+.feedback-write-button {
+    display: flex; align-items: center; gap: .5rem;
+    width: 100%; min-height: 46px; margin: .85rem 0 .2rem; padding: .55rem .7rem .62rem;
+    border: 0; text-align: left; color: var(--mesa-tinta); background: var(--mesa-hoja);
+    border-radius: 0 0 3px 9px;
+    box-shadow: var(--mesa-contacto), 0 8px 11px -7px rgba(176, 122, 79, .5);
+    font-family: var(--mesa-font-mano); font-size: 1.12rem; line-height: 1.15;
+    transform: rotate(-1deg); transition: transform .16s ease, box-shadow .16s ease; cursor: pointer;
+}
+.feedback-write-button:hover { transform: rotate(0) translateY(-2px); box-shadow: var(--mesa-contacto), 0 14px 18px -10px rgba(176, 122, 79, .55); }
+.feedback-write-button .plus { font-size: 1.35rem; line-height: .8; opacity: .65; }
+.feedback-write-button .palette { display: flex; gap: 3px; margin-left: auto; }
+.feedback-write-button .palette i { width: 11px; height: 15px; box-shadow: 0 1px 1px rgba(176, 122, 79, .35); transform: rotate(-5deg); }
+.feedback-write-button .palette i:nth-child(2) { transform: rotate(4deg); }
+
+/* ---- Filtros: trocitos de cartulina, no botones ------------------------- */
+.feedback-legend { display: flex; flex-wrap: wrap; gap: .35rem; margin: .9rem 0 .5rem; }
+.feedback-legend button {
+    display: inline-flex; align-items: center; gap: .32rem;
+    min-width: var(--dlg-area-minima); min-height: var(--dlg-area-minima);
+    padding: .18rem .45rem .24rem; border: 0; border-radius: 0 0 2px 5px;
+    color: var(--mesa-tinta); background: var(--mesa-hoja);
+    box-shadow: var(--mesa-contacto), 0 5px 7px -6px rgba(176, 122, 79, .45);
+    font-family: var(--mesa-font-interfaz); font-size: .86rem; font-weight: 700; line-height: 1.15;
+    font-variant-numeric: tabular-nums;
+    transform: rotate(-1deg); transition: transform .14s ease, background .14s ease; cursor: pointer;
+}
+.feedback-legend button:nth-child(even) { transform: rotate(1.2deg); }
+.feedback-legend button:hover { transform: rotate(0) translateY(-1px); background: #FFFFFF; }
+.feedback-legend button.is-active { background: #FFFFFF; outline: 2px solid rgba(31, 58, 95, .35); outline-offset: 1px; }
+.feedback-swatch { width: 13px; height: 13px; box-shadow: 0 1px 1px rgba(176, 122, 79, .35); transform: rotate(-6deg); }
+
+/* ---- Postit: el aporte ------------------------------------------------- */
+.feedback-note {
+    position: relative; padding: .6rem .65rem .65rem; border: 0; border-radius: 0 0 2px 8px;
+    background-image:
+        linear-gradient(180deg, rgba(31, 58, 95, .06) 0 11%, rgba(31, 58, 95, 0) 11%),
+        radial-gradient(130% 70% at 46% -4%, rgba(255, 255, 255, .38), rgba(255, 255, 255, 0) 60%),
+        linear-gradient(180deg, rgba(31, 58, 95, 0) 74%, rgba(31, 58, 95, .1) 100%);
+    box-shadow: var(--mesa-contacto), 0 9px 12px -8px rgba(176, 122, 79, .42);
+    font-family: var(--mesa-font-mano); font-size: 1rem; line-height: 1.3;
+    transform: rotate(-.8deg);
+}
+.feedback-note::after {
+    content: ''; position: absolute; right: 0; bottom: 0; width: 20px; height: 20px;
+    background: linear-gradient(315deg, rgba(255, 255, 255, .52) 0 42%, rgba(31, 58, 95, .2));
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+.feedback-note:nth-child(even) { transform: rotate(.9deg); }
+.feedback-note:hover { transform: rotate(0) translateY(-2px); }
+/* El peso, no la opacidad, separa rótulo y firma del cuerpo: con opacidad
+   quedaban en 3,0:1 sobre la cartulina (AA pide 4,5). */
+.feedback-note-meta { display: block; font-family: var(--mesa-font-interfaz); font-size: .8rem; font-weight: 700; }
+.feedback-note small { display: block; margin-top: .3rem; font-size: .8rem; font-style: italic; }
+/* Significados de Leer (compatibilidad): me gustó, me hizo pensar, una idea. */
+.feedback-note--works      { background-color: var(--mesa-verde); color: var(--mesa-verde-tinta); }
+.feedback-note--improve    { background-color: var(--mesa-roja);  color: var(--mesa-roja-tinta); }
+.feedback-note--suggestion { background-color: var(--mesa-azul);  color: var(--mesa-azul-tinta); }
+
+/* ---- Aviso breve: un papelito, no una caja de sistema ------------------- */
+.feedback-toast {
+    position: fixed; left: 50%; bottom: 1.25rem; z-index: 90; max-width: min(90vw, 34rem);
+    padding: .5rem .9rem .58rem; color: var(--mesa-tinta); background: var(--mesa-hoja);
+    box-shadow: var(--mesa-contacto), 0 16px 22px -14px rgba(176, 122, 79, .6);
+    font-family: var(--mesa-font-mano); font-size: 1rem; line-height: 1.2;
+    transform: translateX(-50%) rotate(-.6deg);
+}
+
+/* ---- Observador: el muro tipo corcho ------------------------------------
+   Columnas de ancho fijo y postits de alto libre: cada nota mide lo que mide
+   su texto. La letra crece si el aporte es corto y se reduce si es largo. */
+.observer-board {
+    column-width: 17rem; column-gap: 1.05rem; padding: 1rem;
+    background: linear-gradient(90deg, rgba(31, 58, 95, .035) 1px, transparent 1px), linear-gradient(rgba(31, 58, 95, .035) 1px, transparent 1px), var(--mesa-papel);
+    background-size: 24px 24px; box-shadow: inset 0 0 0 1px rgba(31, 58, 95, .06);
+}
+.observer-note {
+    display: inline-block; width: 100%; margin-bottom: 1.05rem; break-inside: avoid;
+    position: relative; padding: .7rem .8rem .75rem; border: 0; text-align: left;
+    box-shadow: 0 2px 2px rgba(176, 122, 79, .22), 0 13px 16px -12px rgba(31, 58, 95, .5);
+    font-family: var(--mesa-font-mano); font-size: 1.06rem; line-height: 1.3;
+    transform: rotate(-1.6deg); transition: transform .16s ease, box-shadow .16s ease;
+}
+.observer-note--xs { font-size: 1.32rem; line-height: 1.22; }
+.observer-note--sm { font-size: 1.16rem; }
+.observer-note--lg { font-size: .99rem; line-height: 1.34; }
+.observer-note:nth-child(3n) { transform: rotate(1.8deg) translateY(.25rem); }
+.observer-note:nth-child(4n) { transform: rotate(-.4deg) translateY(-.2rem); }
+.observer-note:hover { z-index: 2; transform: rotate(0) translateY(-3px) scale(1.02); }
+.observer-note::after { content: ''; position: absolute; right: 0; bottom: 0; width: 24px; height: 24px; background: linear-gradient(315deg, rgba(255, 255, 255, .58) 0 43%, rgba(31, 58, 95, .2)); clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+.observer-note-meta { display: block; margin-bottom: .45rem; font-family: var(--mesa-font-interfaz); font-weight: 700; font-size: .78rem; }
+.observer-note-body { display: block; overflow-wrap: anywhere; }
+.observer-note-author { display: block; margin-top: .55rem; font-size: .82rem; font-style: italic; }
+
+@media (max-width: 900px) {
+    .observer-board { column-width: 13.5rem; column-gap: .75rem; padding: .7rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .feedback-note, .feedback-write-button, .feedback-legend button, .observer-note { transition: none; transform: none; }
+}

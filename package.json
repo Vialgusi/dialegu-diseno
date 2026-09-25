@@ -1,0 +1,30 @@
+{
+  "name": "@dialegu/diseno",
+  "version": "0.4.0",
+  "description": "Sistema de diseño Dialegu: núcleo, modo mesa y fuentes autoalojadas para la web, Leer Dialegu y Sistematízame.",
+  "private": true,
+  "type": "module",
+  "files": [
+    "nucleo/",
+    "mesa/",
+    "fuentes/",
+    "catalogo/index.html",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "exports": {
+    "./nucleo.css": "./nucleo/nucleo.css",
+    "./mesa.css": "./mesa/mesa.css",
+    "./fuentes.css": "./fuentes/fuentes.css",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "verificar": "python scripts/verificar.py",
+    "fuentes": "python scripts/fuentes.py",
+    "catalogo": "python scripts/catalogo-autonomo.py"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vialgusi/dialegu-diseno.git"
+  }
+}

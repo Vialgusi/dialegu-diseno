@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Catálogo Dialegu</title>
+<link rel="stylesheet" href="../fuentes/fuentes.css">
+<link rel="stylesheet" href="../nucleo/nucleo.css">
+<link rel="stylesheet" href="../mesa/mesa.css">
+<style>
+/* Estilos solo del catálogo. Un solo mundo visual: papel y tinta, a propósito. */
+html { color-scheme: light; }
+body { margin: 0; background: var(--mesa-papel); color: var(--mesa-tinta); font-family: var(--dlg-font-interfaz); line-height: 1.5; padding-inline: 16px; }
+.cat { max-width: 1080px; margin: 0 auto; padding-block: 40px 80px; }
+.cat h1 { font-family: var(--dlg-font-titulo); font-weight: 400; font-size: clamp(34px, 5vw, 56px); line-height: 1.02; margin: 0 0 10px; text-wrap: balance; }
+.cat .bajada { max-width: 62ch; font-size: 1.08rem; color: var(--mesa-tinta-suave); margin: 0; }
+.cat section { padding-block: 40px 8px; border-top: 1px solid var(--dlg-borde); margin-top: 40px; }
+.cat h2 { font-family: var(--dlg-font-titulo); font-weight: 400; font-size: 1.9rem; margin: 0 0 6px; }
+.cat .porque { max-width: 66ch; color: var(--mesa-tinta-suave); margin: 0 0 22px; }
+.cat .etq { font-family: var(--dlg-font-interfaz); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--mesa-tinta-suave); }
+.rejilla { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+.hoja { background: var(--mesa-hoja); box-shadow: var(--mesa-contacto), var(--mesa-elevacion); border-radius: 0 0 3px 8px; padding: 16px 18px; }
+
+/* Especímenes de la «a» */
+.especimen { display: grid; grid-template-columns: minmax(150px, 220px) 1fr auto; align-items: center; gap: 8px 20px; padding: 12px 0; border-bottom: 1px solid var(--dlg-borde); }
+.especimen .muestra { font-size: clamp(26px, 4vw, 40px); line-height: 1.1; overflow-wrap: anywhere; }
+.especimen .veredicto { font-size: .82rem; font-weight: 700; padding: 3px 8px; border-radius: var(--dlg-radio-marca); white-space: nowrap; }
+.si { background: var(--dlg-exito-fondo); color: var(--dlg-exito); }
+.no { background: var(--dlg-aviso-fondo); color: var(--dlg-aviso); }
+@media (max-width: 640px) { .especimen { grid-template-columns: 1fr; } }
+
+/* Interruptor de la interfaz de diálogo */
+.interruptor { display: inline-flex; gap: 4px; background: var(--mesa-hoja); padding: 4px; border-radius: var(--dlg-radio-control); box-shadow: var(--mesa-contacto); margin: 4px 0 18px; flex-wrap: wrap; }
+.interruptor button { font: 700 .9rem/1 var(--dlg-font-interfaz); border: 0; background: transparent; color: var(--mesa-tinta); padding: 10px 14px; border-radius: 6px; cursor: pointer; min-height: var(--dlg-area-minima); }
+.interruptor button[aria-pressed="true"] { background: var(--mesa-tinta); color: var(--mesa-hoja); }
+.interruptor button[aria-pressed="true"]:focus-visible { outline-color: var(--mesa-tinta); }
+.mesa[data-interfaz="instrument"] { --mesa-font-interfaz: 'Instrument Sans', system-ui, sans-serif; }
+
+/* Demostración de la mesa */
+.mesa-demo { padding: 22px; border-radius: 0 0 4px 10px; box-shadow: inset 0 0 0 1px rgba(31,58,95,.06); }
+.mesa-demo .columnas { display: grid; grid-template-columns: minmax(220px, 300px) 1fr; gap: 24px; }
+@media (max-width: 760px) { .mesa-demo .columnas { grid-template-columns: 1fr; } }
+.mesa-demo .lista { display: grid; gap: .75rem; }
+.contador { font-family: var(--mesa-font-interfaz); font-variant-numeric: tabular-nums; font-weight: 700; background: var(--mesa-hoja); box-shadow: var(--mesa-contacto); padding: 2px 8px; display: inline-block; transform: rotate(1.2deg); }
+
+/* Cartulinas */
+.cartulina-muestra { min-height: 150px; padding: 14px 16px; border-radius: 0 0 2px 8px; box-shadow: var(--mesa-contacto), 0 9px 12px -8px rgba(176,122,79,.42); display: flex; flex-direction: column; gap: 6px; }
+.cartulina-muestra b { font-family: var(--mesa-font-mano); font-weight: 400; font-size: 1.5rem; }
+.cartulina-muestra code { font-size: .8rem; }
+.cartulina-muestra button { margin-top: auto; align-self: flex-start; font: 700 .85rem var(--dlg-font-dialogo); border: 0; background: var(--mesa-hoja); color: var(--mesa-tinta); padding: 8px 12px; min-height: var(--dlg-area-minima); box-shadow: var(--mesa-contacto); cursor: pointer; }
+
+/* Estados y foco */
+.estado { padding: 12px 14px; border-radius: var(--dlg-radio-marca); font-weight: 600; }
+.estado span { display: block; font-weight: 400; font-size: .9rem; }
+.foco-demo { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+.foco-demo > div { padding: 22px 18px; border-radius: var(--dlg-radio-tarjeta); }
+.foco-demo button { font: 700 .95rem var(--dlg-font-interfaz); border: 0; border-radius: var(--dlg-radio-control); padding: 10px 16px; min-height: var(--dlg-area-minima); cursor: pointer; }
+.foco-demo p { margin: 10px 0 0; font-size: .85rem; }
+.radios { display: flex; flex-wrap: wrap; gap: 16px; }
+.radios div { width: 120px; height: 84px; background: var(--mesa-hoja); box-shadow: var(--mesa-contacto); display: grid; place-items: end start; padding: 8px 10px; font-size: .82rem; }
+table { border-collapse: collapse; width: 100%; font-size: .95rem; }
+th, td { text-align: left; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--dlg-borde); vertical-align: top; }
+th { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--mesa-tinta-suave); }
+.tabla { overflow-x: auto; }
+</style>
+</head>
+<body>
+<main class="cat">
+  <p class="etq">Sistema de diseño Dialegu · v0.3.0 · propuesta</p>
+  <h1>Catálogo vivo</h1>
+  <p class="bajada">Lo que la persona lleva de un producto a otro, funcionando. Venimos de la facilitación con tarjetas: por eso la mesa, la cartulina y lo escrito a mano.</p>
+
+  <section aria-labelledby="t-a">
+    <h2 id="t-a">La «a» escolar</h2>
+    <p class="porque">La «a» de círculo y palito es la que se aprende a escribir en la escuela latinoamericana. En las superficies de diálogo, todo lo que se lee y se pulsa la lleva, para que la mesa se sienta escrita a mano y cercana.</p>
+    <div class="especimen"><span class="etq">Shantell Sans · mano</span><span class="muestra" style="font-family:var(--dlg-font-mano)">a g · Compartamos la idea</span><span class="veredicto si">a escolar</span></div>
+    <div class="especimen"><span class="etq">Dialegu Escolar · diálogo</span><span class="muestra" style="font-family:var(--dlg-font-dialogo)">a g · Compartir aporte 1 2 3</span><span class="veredicto si">a escolar · cifras iguales</span></div>
+    <div class="especimen"><span class="etq">Instrument Sans · sitio</span><span class="muestra" style="font-family:'Instrument Sans'">a g · Compartir aporte 1 2 3</span><span class="veredicto no">a de imprenta</span></div>
+    <div class="especimen"><span class="etq">Fraunces · títulos</span><span class="muestra" style="font-family:var(--dlg-font-titulo)">a g · Leer juntos</span><span class="veredicto no">a de imprenta · solo sitio</span></div>
+  </section>
+
+  <section aria-labelledby="t-mesa">
+    <h2 id="t-mesa">La mesa</h2>
+    <p class="porque">Sobre la mesa solo hay objetos. Compara la interfaz con la «a» escolar y con la de imprenta: el aporte siempre va a mano.</p>
+    <div class="interruptor" role="group" aria-label="Interfaz de diálogo">
+      <button type="button" data-interfaz="escolar" aria-pressed="true">Dialegu Escolar</button>
+      <button type="button" data-interfaz="instrument" aria-pressed="false">Instrument Sans</button>
+    </div>
+    <div class="mesa mesa-demo" id="mesa-demo" data-interfaz="escolar">
+      <div class="columnas">
+        <div>
+          <h3 style="font-size:1.5rem;margin:0;transform:rotate(-1.4deg)">Aportes al libro</h3>
+          <p class="desk-note">Lo que la sala va dejando sobre la mesa</p>
+          <button type="button" class="feedback-write-button"><span class="plus">＋</span> Compartir aporte <span class="palette" aria-hidden="true"><i style="background:var(--mesa-verde)"></i><i style="background:var(--mesa-amarilla)"></i><i style="background:var(--mesa-azul)"></i></span></button>
+          <div class="feedback-legend" role="group" aria-label="Filtrar aportes">
+            <button type="button" class="is-active">Todos 12</button>
+            <button type="button"><i class="feedback-swatch" style="background:var(--mesa-verde)"></i>Me gustó 5</button>
+            <button type="button"><i class="feedback-swatch" style="background:var(--mesa-roja)"></i>Me hizo pensar 3</button>
+            <button type="button"><i class="feedback-swatch" style="background:var(--mesa-azul)"></i>Una idea 4</button>
+          </div>
+          <p>Página <span class="contador">07 / 16</span></p>
+        </div>
+        <div class="lista">
+          <article class="feedback-note feedback-note--works"><span class="feedback-note-meta">Me gustó · página 04</span>Que el elefante entero aparezca cuando cada quien cuenta su parte.<small>Marta L.</small></article>
+          <article class="feedback-note feedback-note--improve"><span class="feedback-note-meta">Me hizo pensar · página 09</span>¿Y si nadie hubiera tocado la trompa?<small>Jhon F.</small></article>
+          <article class="feedback-note feedback-note--suggestion"><span class="feedback-note-meta">Una idea · página 12</span>Leerlo con las familias y dibujar cada parte en una tarjeta.<small>Yurley P.</small></article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-cartulina">
+    <h2 id="t-cartulina">Cartulina Bristol</h2>
+    <p class="porque">Un solo juego de cuatro colores, cada uno con su tinta. El material es común; el significado lo decide cada producto, y siempre va escrito. Pulsa Tab para ver el foco en tinta sobre cada una.</p>
+    <div class="rejilla">
+      <div class="cartulina-muestra cartulina--verde"><b>Verde</b><code>#AECBB0 · tinta #2E4B33 · 5,51</code><span>Leer: «Me gustó» · Encuentros: mint</span><button type="button">Probar foco</button></div>
+      <div class="cartulina-muestra cartulina--amarilla"><b>Amarilla</b><code>#F4D774 · tinta #5C4400 · 6,49</code><span>Encuentros: sand · sala física</span><button type="button">Probar foco</button></div>
+      <div class="cartulina-muestra cartulina--azul"><b>Azul</b><code>#A9DCE3 · tinta #17505A · 6,02</code><span>Leer: «Una idea» · Encuentros: sky</span><button type="button">Probar foco</button></div>
+      <div class="cartulina-muestra cartulina--roja"><b>Roja</b><code>#F3B79C · tinta #7A3A16 · 4,94</code><span>Leer: «Me hizo pensar» · Encuentros: coral</span><button type="button">Probar foco</button></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-roles">
+    <h2 id="t-roles">Tipografía por papel</h2>
+    <p class="porque">La familia se elige por lo que hace en la pantalla.</p>
+    <div class="tabla"><table>
+      <thead><tr><th>Papel</th><th>Familia</th><th>Qué lleva</th><th>Dónde</th></tr></thead>
+      <tbody>
+        <tr><td>Mano</td><td style="font-family:var(--dlg-font-mano)">Shantell Sans</td><td>Lo que escribe una persona: aportes, tarjetas, rótulos</td><td>Superficies de diálogo</td></tr>
+        <tr><td>Diálogo</td><td style="font-family:var(--dlg-font-dialogo)">Dialegu Escolar</td><td>Lo que se pulsa o se lee como dato, con la «a» escolar</td><td>Superficies de diálogo (propuesta D12)</td></tr>
+        <tr><td>Interfaz</td><td style="font-family:'Instrument Sans'">Instrument Sans</td><td>Botones, navegación y datos en páginas de sitio</td><td>Web · Leer sitio · (Sistematízame: Atkinson)</td></tr>
+        <tr><td>Títulos</td><td style="font-family:var(--dlg-font-titulo)">Fraunces</td><td>La voz pública</td><td>Solo en sitio</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section aria-labelledby="t-estados">
+    <h2 id="t-estados">Estados</h2>
+    <p class="porque">Fijos del núcleo: quien se equivoca reconoce el error igual en cualquier producto.</p>
+    <div class="rejilla">
+      <div class="estado" style="background:var(--dlg-error-fondo);color:var(--dlg-error)">Error<span>No pudimos guardar tu aporte. Vuelve a intentarlo.</span></div>
+      <div class="estado" style="background:var(--dlg-aviso-fondo);color:var(--dlg-aviso)">Aviso<span>Te quedan 2 aportes en esta actividad.</span></div>
+      <div class="estado" style="background:var(--dlg-exito-fondo);color:var(--dlg-exito)">Éxito<span>Tu aporte ya está en la mesa.</span></div>
+      <div class="estado" style="background:var(--dlg-info-fondo);color:var(--dlg-info)">Información<span>El grupo pasó al siguiente libro.</span></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-foco">
+    <h2 id="t-foco">Foco</h2>
+    <p class="porque">El anillo se dibuja sobre el fondo que rodea al control y se mide contra ese fondo: mínimo 3:1. Pulsa Tab.</p>
+    <div class="foco-demo">
+      <div style="background:var(--mesa-papel);box-shadow:inset 0 0 0 1px var(--dlg-borde)"><button type="button" style="background:var(--dlg-accion);color:#fff">Compartir</button><p>Tinta sobre papel · 10,23</p></div>
+      <div class="dlg-oscuro" style="background:var(--mesa-tinta);color:#fff"><button type="button" style="background:var(--mesa-hoja);color:var(--mesa-tinta)">Entrar</button><p>Blanco sobre tinta · 11,48</p></div>
+      <div style="background:var(--mesa-azul);color:var(--mesa-azul-tinta)"><button type="button" style="background:var(--mesa-hoja);color:var(--mesa-tinta)">Filtrar</button><p>Tinta sobre cartulina azul · 7,67</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-forma">
+    <h2 id="t-forma">Forma</h2>
+    <p class="porque">Cuatro radios con nombre. En la mesa, los papeles llevan esquinas asimétricas pequeñas.</p>
+    <div class="radios">
+      <div style="border-radius:var(--dlg-radio-control)">control · 8</div>
+      <div style="border-radius:var(--dlg-radio-tarjeta)">tarjeta · 12</div>
+      <div style="border-radius:var(--dlg-radio-marca)">marca · 4</div>
+      <div style="border-radius:var(--dlg-radio-media)">media · 2</div>
+      <div style="border-radius:0 0 3px 8px">papel de mesa</div>
+    </div>
+  </section>
+</main>
+<script>
+(() => {
+  const mesa = document.getElementById('mesa-demo');
+  document.querySelectorAll('.interruptor button').forEach((b) => {
+    b.addEventListener('click', () => {
+      mesa.dataset.interfaz = b.dataset.interfaz;
+      document.querySelectorAll('.interruptor button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    });
+  });
+})();
+</script>
+</body>
+</html>
