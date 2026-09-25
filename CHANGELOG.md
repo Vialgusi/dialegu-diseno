@@ -1,5 +1,11 @@
 # Cambios
 
+## 0.6.0 · 25-09-2026
+
+- **Fraunces variable** (tamaño óptico 9–144 y peso 100–900), fiel a como la servía Google Fonts: SOFT y WONK en 0, mismos anchos verificados en tres puntos del diseño. La 0.5.0 servía la versión fija para texto pequeño en todos los tamaños, lo que engrosaba los títulos grandes. Una sola cara cubre del 100 al 900, incluidos el 800 y el 900 que usa Leer.
+- **`fuentes-leer.css`** (opcional): EB Garamond variable, redonda y cursiva, peso 400–800, para la lectura larga del tema de Leer.
+- Presupuesto propio para fuentes variables en `scripts/verificar.py`.
+
 ## 0.5.0 · 25-09-2026
 
 - Pesos y estilos que usa la mesa de Encuentros: Instrument Sans 500, Fraunces 700, Shantell Sans 500 y cursiva 400. Declarar un peso no cuesta: el navegador solo lo descarga si alguna letra lo usa.

@@ -73,8 +73,12 @@ PRESUPUESTOS = {
     'nucleo/nucleo.css': 6_000,
     'mesa/mesa.css': 16_500,
     'fuentes/fuentes.css': 12_000,
+    'fuentes/fuentes-leer.css': 3_000,
 }
+# Una fuente variable reúne todos sus pesos en un archivo: se compara con la
+# suma de las estáticas que reemplaza (Fraunces 400, 600 y 700 ≈ 52 KB).
 PRESUPUESTO_FUENTE = {'latin': 48_000, 'latin-ext': 72_000}
+PRESUPUESTO_VARIABLE = {'latin': 72_000, 'latin-ext': 104_000}
 
 
 def main():
@@ -96,7 +100,8 @@ def main():
     archivos = dict(PRESUPUESTOS)
     for fuente in sorted((RAIZ / 'fuentes').glob('*.woff2')):
         tramo = 'latin-ext' if fuente.stem.endswith('latin-ext') else 'latin'
-        archivos[f'fuentes/{fuente.name}'] = PRESUPUESTO_FUENTE[tramo]
+        tabla = PRESUPUESTO_VARIABLE if '-var-' in fuente.name else PRESUPUESTO_FUENTE
+        archivos[f'fuentes/{fuente.name}'] = tabla[tramo]
     for ruta, limite in archivos.items():
         peso = (RAIZ / ruta).stat().st_size
         ok = peso <= limite

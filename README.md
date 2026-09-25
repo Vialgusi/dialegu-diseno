@@ -21,7 +21,7 @@ Como dependencia de Git con versión etiquetada. `npm` fija el commit exacto en 
 
 ```json
 "dependencies": {
-  "@dialegu/diseno": "github:Vialgusi/dialegu-diseno#semver:^0.5.0"
+  "@dialegu/diseno": "github:Vialgusi/dialegu-diseno#semver:^0.6.0"
 }
 ```
 
@@ -33,6 +33,7 @@ En el CSS de entrada (Vite resuelve y copia las fuentes):
 
 ```css
 @import '@dialegu/diseno/fuentes.css';
+@import '@dialegu/diseno/fuentes-leer.css'; /* solo Leer: EB Garamond */
 @import '@dialegu/diseno/nucleo.css';
 @import '@dialegu/diseno/mesa.css';   /* solo en rutas con superficie de diálogo */
 @import './tema.css';                 /* los valores del tema del producto */
