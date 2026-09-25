@@ -21,7 +21,7 @@ Como dependencia de Git con versión etiquetada. `npm` fija el commit exacto en 
 
 ```json
 "dependencies": {
-  "@dialegu/diseno": "github:Vialgusi/dialegu-diseno#semver:^0.4.0"
+  "@dialegu/diseno": "github:Vialgusi/dialegu-diseno#semver:^0.5.0"
 }
 ```
 

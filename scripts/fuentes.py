@@ -10,9 +10,10 @@ Andika se renombra «Dialegu Escolar»: la OFL reserva «Andika» para la fuente
 modificar y el recorte es una modificación.
 
 Uso: python scripts/fuentes.py <carpeta con los TTF originales>
-Espera: Andika-400.ttf, Andika-700.ttf, Shantell-400.ttf, Shantell-600.ttf,
-        Instrument-400.ttf, Instrument-600.ttf, Instrument-700.ttf,
-        Fraunces-400.ttf, Fraunces-600.ttf
+Espera los TTF listados en FUENTES. Genera los .woff2 y fuentes/fuentes.css.
+
+Declarar un peso no cuesta: el navegador solo descarga la fuente de un
+@font-face cuando alguna letra de la página la usa.
 """
 import pathlib
 import sys
@@ -32,18 +33,54 @@ RANGOS = {
 }
 RASGOS = ['kern', 'liga', 'calt', 'tnum', 'lnum', 'pnum', 'ccmp', 'locl', 'mark', 'mkmk', 'rlig']
 
+# (archivo de origen, nombre de salida, familia, peso, estilo, renombrar)
 FUENTES = [
-    # (archivo de origen, nombre de salida, renombrar)
-    ('Andika-400', 'DialeguEscolar-400', True),
-    ('Andika-700', 'DialeguEscolar-700', True),
-    ('Shantell-400', 'Shantell-400', False),
-    ('Shantell-600', 'Shantell-600', False),
-    ('Instrument-400', 'Instrument-400', False),
-    ('Instrument-600', 'Instrument-600', False),
-    ('Instrument-700', 'Instrument-700', False),
-    ('Fraunces-400', 'Fraunces-400', False),
-    ('Fraunces-600', 'Fraunces-600', False),
+    ('Andika-400', 'DialeguEscolar-400', 'Dialegu Escolar', 400, 'normal', True),
+    ('Andika-700', 'DialeguEscolar-700', 'Dialegu Escolar', 700, 'normal', True),
+    ('Shantell-400', 'Shantell-400', 'Shantell Sans', 400, 'normal', False),
+    ('Shantell-400i', 'Shantell-400i', 'Shantell Sans', 400, 'italic', False),
+    ('Shantell-500', 'Shantell-500', 'Shantell Sans', 500, 'normal', False),
+    ('Shantell-600', 'Shantell-600', 'Shantell Sans', 600, 'normal', False),
+    ('Instrument-400', 'Instrument-400', 'Instrument Sans', 400, 'normal', False),
+    ('Instrument-500', 'Instrument-500', 'Instrument Sans', 500, 'normal', False),
+    ('Instrument-600', 'Instrument-600', 'Instrument Sans', 600, 'normal', False),
+    ('Instrument-700', 'Instrument-700', 'Instrument Sans', 700, 'normal', False),
+    ('Fraunces-400', 'Fraunces-400', 'Fraunces', 400, 'normal', False),
+    ('Fraunces-600', 'Fraunces-600', 'Fraunces', 600, 'normal', False),
+    ('Fraunces-700', 'Fraunces-700', 'Fraunces', 700, 'normal', False),
 ]
+
+COMENTARIOS = {
+    'Dialegu Escolar': 'Diálogo: la «a» escolar en todo lo que se lee y se pulsa en una superficie\n'
+                       '   de diálogo. Cifras del mismo ancho por defecto.',
+    'Shantell Sans': 'Mano: lo que escribe una persona. Tarjetas de Metaplan, aportes, notas.\n'
+                     '   Si le falta un glifo (por ejemplo la ɨ), lo dibuja Dialegu Escolar.',
+    'Instrument Sans': 'Sitio: interfaz de las páginas institucionales y de producto.',
+    'Fraunces': 'Títulos: la voz pública, fuera de las superficies de diálogo.',
+}
+
+CABECERA = """/* Fuentes del sistema Dialegu, servidas desde el dominio de cada producto.
+   Sin Google Fonts: ninguna visita envía datos a un tercero para leer una letra.
+   Dos recortes por fuente con `unicode-range`: el latino se descarga siempre que
+   se usa la fuente y el extendido (lenguas indígenas escritas en latín: ẽ ĩ ũ ỹ,
+   ā ō, ɨ) solo cuando la página lo necesita. Cada peso se descarga solo si alguna
+   letra lo usa. Archivo generado por scripts/fuentes.py: no editar a mano.
+   Licencias en ./licencias. «Dialegu Escolar» deriva de Andika (SIL International). */
+"""
+
+
+def escribir_css(generadas):
+    lineas = [CABECERA]
+    familia_actual = None
+    for familia, peso, estilo, archivo, tramo in generadas:
+        if familia != familia_actual:
+            lineas.append(f"\n/* {COMENTARIOS[familia]} */")
+            familia_actual = familia
+        lineas.append(
+            f"@font-face {{ font-family: '{familia}'; src: url('./{archivo}') format('woff2'); "
+            f"font-weight: {peso}; font-style: {estilo}; font-display: swap; unicode-range: {RANGOS[tramo]}; }}"
+        )
+    (DESTINO / 'fuentes.css').write_text('\n'.join(lineas) + '\n', encoding='utf-8', newline='\n')
 
 
 def renombrar(fuente):
@@ -60,7 +97,8 @@ def main(origen):
     origen = pathlib.Path(origen)
     for viejo in DESTINO.glob('*.woff2'):
         viejo.unlink()
-    for archivo, salida, cambiar_nombre in FUENTES:
+    generadas = []
+    for archivo, salida, familia, peso, estilo, cambiar_nombre in FUENTES:
         for tramo, rango in RANGOS.items():
             opciones = subset.Options()
             opciones.flavor = 'woff2'
@@ -78,7 +116,11 @@ def main(origen):
                 continue
             destino = DESTINO / f'{salida}-{tramo}.woff2'
             subset.save_font(fuente, str(destino), opciones)
+            generadas.append((familia, peso, estilo, destino.name, tramo))
             print(f'  {destino.name:34} {destino.stat().st_size / 1024:6.1f} KB  {len(fuente.getBestCmap())} caracteres')
+
+    escribir_css(generadas)
+    print(f'  fuentes.css: {len(generadas)} caras')
 
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
 {
   "name": "@dialegu/diseno",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Sistema de diseño Dialegu: núcleo, modo mesa y fuentes autoalojadas para la web, Leer Dialegu y Sistematízame.",
   "private": true,
   "type": "module",
