@@ -12,6 +12,7 @@ La norma, con sus motivos, está en `docs/SISTEMA-DISENO-DIALEGU.md` de Dialegu-
 | `nucleo/nucleo.css` | Tokens `--dlg-*`: papeles tipográficos, estados, foco, radios, área mínima; foco visible y movimiento reducido |
 | `mesa/mesa.css` | Modo mesa: papel, cartulina Bristol de cuatro colores con su tinta, mesa de noche y los objetos para aportar (hoja, filtros, postit, aviso, muro tipo corcho, muro de aportes con `.muro` y `.nota`) |
 | `catalogo/index.html` | El sistema funcionando, para revisar y decidir |
+| `herramientas/` | Una ficha por herramienta compartida (muro de presentación, próximamente muro de aportes y galería), con su tabla de paridad entre productos. No se publica como código: orienta el diseño |
 
 **Tipografía de diálogo:** en toda superficie donde se lee en común, se conversa o se cocrea, la interfaz usa **Dialegu Escolar** (la «a» escolar, cifras del mismo ancho) y lo que escribe una persona va en **Shantell Sans**, como una tarjeta de Metaplan. Una superficie de diálogo en español descarga unos 87 KB de fuentes.
 
