@@ -51,13 +51,13 @@ Material: papel de la mesa, esquinas de papel asimétricas, sombras de tinta y r
 
 | Qué | Encuentros | Sistematízame |
 |---|---|---|
-| Preguntas | De 1 a 4, libres, con su etiqueta | Fijas: quién eres, rol, desde dónde llegas, qué esperas |
+| Preguntas | De 1 a 4, libres, con su etiqueta; una puede marcarse como rol y otra como lugar (#161) | Fijas: quién eres, rol, desde dónde llegas, qué esperas |
 | Foto obligatoria | Opcional por muro (`require_photo`) | Opcional |
 | Permitir editar | Por muro (`allow_edits`) | Cada persona edita la suya; no es configurable |
 
 ## 6. Tabla de paridad
 
-Verificada en el código el 29-09-2026: Encuentros en `develop` más Vialgusi/Web-Dialegu#158 (abierto); Sistematízame en `main` (`resources/views/spaces/espacio-muro.blade.php`, `resources/js/muro-mesa.js`, `EspacioMuro.php`).
+Verificada en el código el 29-09-2026: Encuentros en `develop` más Vialgusi/Web-Dialegu#158 y #161 (abiertos); Sistematízame en `main` (`resources/views/spaces/espacio-muro.blade.php`, `resources/js/muro-mesa.js`, `EspacioMuro.php`).
 
 | Comportamiento | Encuentros | Sistematízame | Leer |
 |---|---|---|---|
@@ -65,11 +65,11 @@ Verificada en el código el 29-09-2026: Encuentros en `develop` más Vialgusi/We
 | Foto polaroid con altura máxima | ✓ #158 (17 / 21 / 14rem) | ✓ (17 / 21rem) | — |
 | Inicial sobre cartulina sin foto | ✓ #158 | ✓ | — |
 | Nombre y respuestas a mano | ✓ #158 | ✓ (nombre y expectativa) | — |
-| Rol como trocito de cartulina | ✗ Las preguntas son libres: no sabe cuál es el rol | ✓ | — |
+| Rol como trocito de cartulina | ✓ #161: quien prepara marca qué pregunta es el rol | ✓ | — |
 | «Leer completo» medido | ✓ #158 | ✓ | — |
 | Buscar sin tildes | ✓ #158 | ✓ | — |
 | Ordenar | ✓ #158 | ✓ | — |
-| Agrupar por municipio o rol | ✗ | ✗ | — |
+| Agrupar por municipio o rol | ✓ #161: índice por grupo, sin tildes ni mayúsculas | ✗ | — |
 | Proyectar solo tarjetas | ✓ #158 («Pantalla completa» y proyección clásica) | ✓ (Proyectar, solo quien facilita) | — |
 | Mesa de noche | ✗ | ✓ | — |
 | Tarjeta para añadir | ✓ punteada, al inicio | ✓ «Poner mi tarjeta», al final | — |
@@ -84,7 +84,7 @@ Verificada en el código el 29-09-2026: Encuentros en `develop` más Vialgusi/We
 
 ## 7. Brechas y siguiente paso
 
-1. **Rol y lugar en Encuentros.** Permitir marcar en la configuración qué pregunta es el rol y cuál el lugar, o que la respuesta sea una opción de una lista. Con eso: el rol como trocito de cartulina y **«Agrupar por»** rol o municipio, que hoy no tiene ningún producto.
+1. **«Agrupar por» en Sistematízame.** Encuentros ya agrupa por rol o lugar (#161). Sistematízame tiene los dos campos fijos (`rol`, `lugarNombre`), así que puede traerlo sin cambiar su formulario.
 2. **Retirar y ocultar.** Encuentros borra la tarjeta de forma permanente; Sistematízame la oculta y permite volver a mostrarla, como decidió R13 para los aportes. Conviene llevar a Encuentros el ocultar reversible y la moderación de quien facilita.
 3. **Mesa de noche en Encuentros**, para salas oscuras.
 4. **Objeto en el paquete.** Los dos productos ya comparten el aspecto: `.tarjeta-presentacion` puede pasar a `mesa/mesa.css`, como `.muro` y `.nota` en la 0.7.0. Así la próxima mejora llega a los dos a la vez.
@@ -96,3 +96,4 @@ Verificada en el código el 29-09-2026: Encuentros en `develop` más Vialgusi/We
 |---|---|
 | 25-09-2026 | Sistematízame pasa el muro al modo mesa (R15, Vialgusi/Sistematizame-Platform#20) y ajusta fotos verticales y textos largos |
 | 29-09-2026 | Encuentros trae el mismo diseño, con búsqueda, «Ordenar» y «Leer completo» medido (Vialgusi/Web-Dialegu#158). Primera versión de esta ficha |
+| 29-09-2026 | Encuentros reconoce el rol y el lugar y agrupa el muro por ellos (Vialgusi/Web-Dialegu#161) |
